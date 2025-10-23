@@ -1,0 +1,111 @@
+.invoice-form {
+  max-width: 800px;
+  margin: 30px auto;
+  padding: 25px;
+  border: 2px solid #d0d0d0;
+  border-radius: 10px;
+  background: #fafafa;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.invoice-form h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.invoice-form section {
+  border: 1px solid #ccc;
+  padding: 15px;
+  margin-bottom: 25px;
+  border-radius: 8px;
+  background-color: #fff;
+}
+
+.invoice-form h2 {
+  margin-bottom: 15px;
+  color: #2c3e50;
+  font-weight: bold;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 5px;
+}
+
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  gap: 10px;
+}
+
+.form-row label {
+  width: 180px;
+  font-weight: 600;
+}
+
+.form-row input,
+.form-row textarea {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+textarea {
+  resize: vertical;
+  height: 60px;
+}
+
+.goods-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.goods-row input {
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+/* Item description is wider */
+.goods-row .desc-input {
+  flex: 2;
+  min-width: 220px;
+}
+
+/* Other inputs are smaller */
+.goods-row .small-input {
+  width: 90px;
+  flex-shrink: 0;
+  text-align: center;
+}
+
+/* Buttons styling */
+.add-btn,
+.remove-btn {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.remove-btn {
+  background-color: #dc3545;
+}
+
+.add-btn:hover {
+  background-color: #0056b3;
+}
+
+.remove-btn:hover {
+  background-color: #b02a37;
+}
+
+
