@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/bill-maker/static/css/main.110376a6.css",
-    "main.js": "/bill-maker/static/js/main.947a354b.js",
+    "main.js": "/bill-maker/static/js/main.e49d910a.js",
     "static/js/239.a786cdaf.chunk.js": "/bill-maker/static/js/239.a786cdaf.chunk.js",
     "static/js/977.9f594204.chunk.js": "/bill-maker/static/js/977.9f594204.chunk.js",
     "static/js/455.bdd3da36.chunk.js": "/bill-maker/static/js/455.bdd3da36.chunk.js",
@@ -9,7 +9,7 @@
     "static/media/signature.png": "/bill-maker/static/media/signature.e4629d8099ea0610418b.png",
     "index.html": "/bill-maker/index.html",
     "main.110376a6.css.map": "/bill-maker/static/css/main.110376a6.css.map",
-    "main.947a354b.js.map": "/bill-maker/static/js/main.947a354b.js.map",
+    "main.e49d910a.js.map": "/bill-maker/static/js/main.e49d910a.js.map",
     "239.a786cdaf.chunk.js.map": "/bill-maker/static/js/239.a786cdaf.chunk.js.map",
     "977.9f594204.chunk.js.map": "/bill-maker/static/js/977.9f594204.chunk.js.map",
     "455.bdd3da36.chunk.js.map": "/bill-maker/static/js/455.bdd3da36.chunk.js.map",
@@ -17,6 +17,6 @@
   },
   "entrypoints": [
     "static/css/main.110376a6.css",
-    "static/js/main.947a354b.js"
+    "static/js/main.e49d910a.js"
   ]
 }
