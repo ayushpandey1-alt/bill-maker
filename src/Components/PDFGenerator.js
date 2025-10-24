@@ -295,19 +295,13 @@ const PDFGenerator = ({ formData }) => {
   };
 
   // === Print PDF ===
-  const printPDF = () => {
-    const doc = buildPDF();
-    const pdfBlob = doc.output("blob");
-    const pdfUrl = URL.createObjectURL(pdfBlob);
-    const iframe = document.createElement("iframe");
-    iframe.style.display = "none";
-    iframe.src = pdfUrl;
-    document.body.appendChild(iframe);
-    iframe.onload = () => {
-      iframe.contentWindow.print();
-      iframe.contentWindow.onafterprint = () => document.body.removeChild(iframe);
-    };
-  };
+const printPDF = () => {
+  const doc = buildPDF();
+  const pdfBlob = doc.output("blob");
+  const pdfUrl = URL.createObjectURL(pdfBlob);
+  window.open(pdfUrl, "_blank"); // Open in new tab for both desktop and mobile
+};
+
 
   // Styles for buttons
   const styles = `
