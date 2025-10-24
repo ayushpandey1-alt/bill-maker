@@ -343,11 +343,6 @@ const PDFGenerator = ({ formData }) => {
 
     // Terms
     doc.setFontSize(8);
-    doc.text("Terms & Conditions:", margin, pageHeight - 55);
-    doc.text("1. Goods once sold will not be taken back or exchanged.", margin + 10, pageHeight - 43);
-    doc.text("2. All disputes subject to Almora jurisdiction only.", margin + 10, pageHeight - 31);
-    
-        doc.setFontSize(8);
     doc.text("Terms & Conditions:", margin, pageHeight - 67);
     doc.text("1. Goods once sold will not be taken back or exchanged.", margin + 10, pageHeight - 55);
     doc.text("2. All disputes subject to Almora jurisdiction only.", margin + 10, pageHeight - 43);
