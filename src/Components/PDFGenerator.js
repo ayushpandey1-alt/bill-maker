@@ -1,7 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { jsPDF } from "jspdf";
 import autoTable from "jspdf-autotable";
-import signature from "../signature.png";
+import signature from "../signature.png"; // Make sure this path is correct
 
 // Helper: convert numbers to words (Indian numbering system)
 const numberToWords = (num) => {
@@ -84,23 +84,18 @@ const formatDate = (dateStr) => {
 };
 
 const PDFGenerator = ({ formData }) => {
-  const generatePDF = () => {
+  // === Helper function to construct the PDF ===
+  const buildPDF = () => {
     const doc = new jsPDF("p", "pt", "a4");
     const pageWidth = doc.internal.pageSize.getWidth();
     const pageHeight = doc.internal.pageSize.getHeight();
     const margin = 30;
-
     let cursorY = margin;
 
-    // Draw page border
-    doc.rect(
-      margin - 10,
-      margin - 10,
-      pageWidth - 2 * (margin - 10),
-      pageHeight - 2 * (margin - 10)
-    );
+    // Border
+    doc.rect(margin - 10, margin - 10, pageWidth - 2 * (margin - 10), pageHeight - 2 * (margin - 10));
 
-    // Header
+    // --- HEADER ---
     const headerHeight = 70;
     doc.rect(margin, cursorY, pageWidth - 2 * margin, headerHeight);
     doc.setFontSize(9);
@@ -116,7 +111,7 @@ const PDFGenerator = ({ formData }) => {
     );
     cursorY += headerHeight + 5;
 
-    // Invoice Info
+    // --- INVOICE INFO ---
     const invoiceInfoHeight = 65;
     doc.rect(margin, cursorY, pageWidth - 2 * margin, invoiceInfoHeight);
     doc.line(pageWidth / 2, cursorY, pageWidth / 2, cursorY + invoiceInfoHeight);
@@ -154,14 +149,13 @@ const PDFGenerator = ({ formData }) => {
     doc.text(`${formData.placeOfSupply}`, pageWidth / 2 + 80, cursorY + 60);
     cursorY += invoiceInfoHeight + 5;
 
-    // Party Box (Billed & Shipped same)
+    // --- PARTY BOX ---
     const partyBoxHeight = 120;
     doc.rect(margin, cursorY, pageWidth - 2 * margin, partyBoxHeight);
     doc.line(pageWidth / 2, cursorY, pageWidth / 2, cursorY + partyBoxHeight);
-
     const billed = formData;
 
-    // --- Billed To ---
+    // Billed To
     doc.setFont(undefined, "bold");
     doc.text("Billed To:", margin + 5, cursorY + 15);
     doc.line(margin, cursorY + 20, pageWidth / 2, cursorY + 20);
@@ -169,73 +163,34 @@ const PDFGenerator = ({ formData }) => {
     doc.text("Name:", margin + 5, cursorY + 35);
     doc.setFont(undefined, "normal");
     doc.text(billed.billedName, margin + 35, cursorY + 35);
-
     doc.setFont(undefined, "bold");
     doc.text("Address:", margin + 5, cursorY + 50);
     doc.setFont(undefined, "normal");
     const billedAddress = doc.splitTextToSize(billed.billedAddress, pageWidth / 2 - 80);
     doc.text(billedAddress, margin + 47, cursorY + 50);
-
     const addrHeight = billedAddress.length * 8;
     doc.setFont(undefined, "bold");
     doc.text("GSTIN:", margin + 5, cursorY + 50 + addrHeight + 10);
     doc.setFont(undefined, "normal");
     doc.text(billed.billedGstin, margin + 38, cursorY + 50 + addrHeight + 10);
 
-    doc.setFont(undefined, "bold");
-    doc.text("State:", margin + 5, cursorY + 50 + addrHeight + 25);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.billedState, margin + 33, cursorY + 50 + addrHeight + 25);
-
-    doc.setFont(undefined, "bold");
-    doc.text("State Code:", margin + 165, cursorY + 50 + addrHeight + 25);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.billedStateCode, margin + 218, cursorY + 50 + addrHeight + 25);
-
-    doc.setFont(undefined, "bold");
-    doc.text("E-way Bill:", margin + 5, cursorY + 50 + addrHeight + 40);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.EWayBillNo, margin + 52, cursorY + 50 + addrHeight + 40);
-
-    doc.setFont(undefined, "bold");
-    doc.text("E-way Date:", margin + 165, cursorY + 50 + addrHeight + 40);
-    doc.setFont(undefined, "normal");
-    doc.text(formatDate(billed.EWayDate), margin + 218, cursorY + 50 + addrHeight + 40);
-
-    // --- Shipped To ---
+    // Shipped To (same)
     doc.setFont(undefined, "bold");
     doc.text("Details of Consignee/Shipped To:", pageWidth / 2 + 5, cursorY + 15);
     doc.line(pageWidth / 2, cursorY + 20, pageWidth - margin, cursorY + 20);
-
     doc.setFont(undefined, "bold");
     doc.text("Name:", pageWidth / 2 + 5, cursorY + 35);
     doc.setFont(undefined, "normal");
     doc.text(billed.billedName, pageWidth / 2 + 35, cursorY + 35);
-
     doc.setFont(undefined, "bold");
     doc.text("Address:", pageWidth / 2 + 5, cursorY + 50);
     doc.setFont(undefined, "normal");
     const shipAddr = doc.splitTextToSize(billed.billedAddress, pageWidth / 2 - 80);
     doc.text(shipAddr, pageWidth / 2 + 48, cursorY + 50);
 
-    doc.setFont(undefined, "bold");
-    doc.text("GSTIN:", pageWidth / 2 + 5, cursorY + 50 + addrHeight + 10);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.billedGstin, pageWidth / 2 + 38, cursorY + 50 + addrHeight + 10);
-
-    doc.setFont(undefined, "bold");
-    doc.text("State:", pageWidth / 2 + 5, cursorY + 50 + addrHeight + 25);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.billedState, pageWidth / 2 + 32, cursorY + 50 + addrHeight + 25);
-
-    doc.setFont(undefined, "bold");
-    doc.text("State Code:", pageWidth / 2 + 165, cursorY + 50 + addrHeight + 25);
-    doc.setFont(undefined, "normal");
-    doc.text(billed.billedStateCode, pageWidth / 2 + 218, cursorY + 50 + addrHeight + 25);
-
     cursorY += partyBoxHeight + 10;
 
-    // Goods Table
+    // --- GOODS TABLE ---
     const goods = formData.items || [];
     const tableData = goods.map((item, i) => {
       const qty = parseFloat(item.qty) || 0;
@@ -248,7 +203,6 @@ const PDFGenerator = ({ formData }) => {
     const cgstRate = parseFloat(formData.cgst) || 0;
     const sgstRate = parseFloat(formData.sgst) || 0;
     const igstRate = parseFloat(formData.igst) || 0;
-
     const cgstAmt = (totalBeforeTax * cgstRate) / 100;
     const sgstAmt = (totalBeforeTax * sgstRate) / 100;
     const igstAmt = (totalBeforeTax * igstRate) / 100;
@@ -265,12 +219,11 @@ const PDFGenerator = ({ formData }) => {
 
     cursorY = doc.lastAutoTable.finalY + 10;
 
-    // Bank & Totals Section
+    // --- BANK & TOTALS ---
     const bankBoxHeight = 120;
     doc.rect(margin, cursorY, pageWidth - 2 * margin, bankBoxHeight);
     doc.line(pageWidth / 2, cursorY, pageWidth / 2, cursorY + bankBoxHeight);
 
-    // Amount in Words (label bold, words normal)
     const words = numberToWords(Math.round(totalAfterTax));
     doc.setFont(undefined, "bold");
     doc.text("Total Amount in Words:", margin + 5, cursorY + 15);
@@ -278,22 +231,18 @@ const PDFGenerator = ({ formData }) => {
     const amountWords = doc.splitTextToSize(words, pageWidth / 2 - 150);
     doc.text(amountWords, margin + 110, cursorY + 15);
 
-    // Bank details
     doc.setFont(undefined, "bold");
     doc.text("Bank Details:", margin + 5, cursorY + 45);
     doc.setFont(undefined, "normal");
     doc.text("Punjab National Bank", margin + 64, cursorY + 45);
-
     doc.setFont(undefined, "bold");
     doc.text("Branch:", margin + 5, cursorY + 60);
     doc.setFont(undefined, "normal");
     doc.text("Mall Road Almora (Uttarakhand)", margin + 42, cursorY + 60);
-
     doc.setFont(undefined, "bold");
     doc.text("A/c No:", margin + 5, cursorY + 75);
     doc.setFont(undefined, "normal");
     doc.text("0962008700005539", margin + 39, cursorY + 75);
-
     doc.setFont(undefined, "bold");
     doc.text("IFSC Code:", margin + 5, cursorY + 90);
     doc.setFont(undefined, "normal");
@@ -318,39 +267,113 @@ const PDFGenerator = ({ formData }) => {
     });
 
     const taxTableY = doc.lastAutoTable.finalY;
-
-    
-    // --- Signature Section with Border and Static Image
     const signBoxY = taxTableY + 10;
     const signBoxHeight = 90;
     const signBoxWidth = pageWidth - 2 * margin;
 
-    // Outer box
     doc.rect(margin, signBoxY, signBoxWidth, signBoxHeight);
-
-    // Add signature image (use your own base64 or import path)
-   
-
     const signX = pageWidth - margin - 150;
     const signY = signBoxY + 10;
     doc.addImage(signature, "PNG", signX, signY, 100, 40);
-
-    // Add signature text
     doc.setFont(undefined, "bold");
     doc.text("For M/s TRIDENT CHEMICALS", signX - 10, signBoxY + 60);
     doc.text("Authorised Signatory", signX + 10, signBoxY + 75);
 
-    // Terms
     doc.setFontSize(8);
-    doc.text("Terms & Conditions:", margin, pageHeight - 55);
-    doc.text("1. Goods once sold will not be taken back or exchanged.", margin + 10, pageHeight - 43);
-    doc.text("2. All disputes subject to Almora jurisdiction only.", margin + 10, pageHeight - 31);
+    doc.text("Terms & Conditions:", margin, pageHeight - 67);
+    doc.text("1. Goods once sold will not be taken back or exchanged.", margin + 10, pageHeight - 55);
+    doc.text("2. All disputes subject to Almora jurisdiction only.", margin + 10, pageHeight - 43);
+    doc.text("3. Interest @ 18% p.a. will be charged if payment is delayed.", margin + 10, pageHeight - 31);
 
-    // Save file
+    return doc;
+  };
+
+  // === Download PDF ===
+  const generatePDF = () => {
+    const doc = buildPDF();
     doc.save(`Trident Chemicals Bill No.${formData.invoiceNo || "unnumbered"}.pdf`);
   };
 
-  return <button onClick={generatePDF}>Generate PDF</button>;
+  // === Print PDF ===
+  const printPDF = () => {
+    const doc = buildPDF();
+    const pdfBlob = doc.output("blob");
+    const pdfUrl = URL.createObjectURL(pdfBlob);
+    const iframe = document.createElement("iframe");
+    iframe.style.display = "none";
+    iframe.src = pdfUrl;
+    document.body.appendChild(iframe);
+    iframe.onload = () => {
+      iframe.contentWindow.print();
+      iframe.contentWindow.onafterprint = () => document.body.removeChild(iframe);
+    };
+  };
+
+  // Styles for buttons
+  const styles = `
+    .pdf-buttons-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin-top: 40px;
+      margin-bottom: 60px;
+      width: 100%;
+    }
+
+    .pdf-button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .pdf-button:hover {
+      background-color: #0056b3;
+    }
+
+    .pdf-button.print {
+      background-color: #28a745;
+    }
+
+    .pdf-button.print:hover {
+      background-color: #1e7e34;
+    }
+
+    @media (max-width: 768px) {
+      .pdf-buttons-wrapper {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .pdf-button {
+        width: 80%;
+        max-width: 280px;
+        font-size: 14px;
+      }
+    }
+  `;
+
+  return (
+    <>
+      <style>{styles}</style>
+
+      {/* Buttons will appear after the form */}
+      <div className="pdf-buttons-wrapper">
+        <button className="pdf-button" onClick={generatePDF}>
+          Generate PDF
+        </button>
+        <button className="pdf-button print" onClick={printPDF}>
+          Print PDF
+        </button>
+      </div>
+    </>
+  );
 };
 
 export default PDFGenerator;

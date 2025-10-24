@@ -205,7 +205,7 @@ const FormComponent = ({ formData, setFormData }) => {
               onChange={(e) => handleGoodsChange(index, e)}
             />
             <input
-              type="text"
+              type="number"
               name="hsnCode"
               placeholder="HSN"
               className="small-input"

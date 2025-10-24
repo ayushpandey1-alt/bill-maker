@@ -1,4 +1,3 @@
-// src/App.js
 import React, { useState } from 'react';
 import FormComponent from './Components/FormComponent';
 import PDFGenerator from './Components/PDFGenerator';
@@ -15,10 +14,10 @@ function App() {
     <div className="App">
       <h1>Bill Maker</h1>
       <FormComponent formData={formData} setFormData={setFormData} />
-      <br />
       <PDFGenerator formData={formData} />
     </div>
   );
 }
 
 export default App;
+
